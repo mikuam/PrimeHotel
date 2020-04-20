@@ -45,7 +45,7 @@ namespace PrimeHotel.Web.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Patch([FromBody] Room room)
+        public async Task<IActionResult> Put([FromBody] Room room)
         {
             var existingRoom = await primeDbContext.Rooms.FindAsync(room.Id);
             if (existingRoom == null)
@@ -53,8 +53,31 @@ namespace PrimeHotel.Web.Controllers
                 return NotFound();
             }
 
-            var updatedRoom = primeDbContext.Update(room);
-            return Ok(updatedRoom);
+            existingRoom.Number = room.Number;
+            existingRoom.Description = room.Description;
+            existingRoom.LastBooked = room.LastBooked;
+            existingRoom.Level = room.Level;
+            existingRoom.RoomType = room.RoomType;
+            existingRoom.NumberOfPlacesToSleep = room.NumberOfPlacesToSleep;
+
+            var updatedRoom = primeDbContext.Update(existingRoom);
+            await primeDbContext.SaveChangesAsync();
+            return Ok(updatedRoom.Entity);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var existingRoom = await primeDbContext.Rooms.FindAsync(id);
+            if (existingRoom == null)
+            {
+                return NotFound();
+            }
+
+            var removedRoom = primeDbContext.Rooms.Remove(existingRoom);
+            await primeDbContext.SaveChangesAsync();
+
+            return Ok(removedRoom.Entity);
         }
     }
 }
