@@ -43,6 +43,27 @@ namespace PrimeHotel.Web.Controllers
             return forecasts;
         }
 
+        // GET: weatherForecast/GetFiltered?SortByTemperature=true&City=Poznan
+        [HttpGet("GetFiltered")]
+        public IEnumerable<WeatherForecast> GetFiltered([FromQuery]WeatherForecastFilters filters)
+        {
+            var rng = new Random();
+            var forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = rng.Next(-20, 55),
+                Summary = Summaries[rng.Next(Summaries.Length)],
+                City = filters.City
+            });
+
+            if (filters.SortByTemperature)
+            {
+                forecasts = forecasts.OrderByDescending(f => f.TemperatureC);
+            }
+
+            return forecasts;
+        }
+
         // GET: weatherForecast/3
         [Route("{daysForward}")]
         [HttpGet]
