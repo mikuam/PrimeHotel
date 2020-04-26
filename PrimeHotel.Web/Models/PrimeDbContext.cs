@@ -11,5 +11,7 @@ namespace PrimeHotel.Web.Models
         }
 
         public virtual DbSet<Room> Rooms { get; set; }
+
+        public virtual DbSet<Profile> Profiles { get; set; }
     }
 }

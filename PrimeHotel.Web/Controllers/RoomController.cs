@@ -26,13 +26,13 @@ namespace PrimeHotel.Web.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var reminder = await primeDbContext.Rooms.FindAsync(id);
-            if (reminder == null)
+            var room = await primeDbContext.Rooms.FindAsync(id);
+            if (room == null)
             {
                 return NotFound();
             }
 
-            return Ok(reminder);
+            return Ok(room);
         }
 
         [HttpPost]

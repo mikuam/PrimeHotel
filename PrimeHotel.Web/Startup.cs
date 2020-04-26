@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using PrimeHotel.Web.Data;
 using PrimeHotel.Web.Models;
 
 namespace PrimeHotel.Web
@@ -26,6 +27,9 @@ namespace PrimeHotel.Web
             // Entity Framework
             services.AddDbContext<PrimeDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("HotelDB")));
+
+            // Dependency Injection
+            services.AddSingleton<IProfilesRepository, ProfilesRepository>();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
