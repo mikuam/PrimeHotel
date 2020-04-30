@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PrimeHotel.Web.Models
 {
@@ -13,5 +12,7 @@ namespace PrimeHotel.Web.Models
         public virtual DbSet<Room> Rooms { get; set; }
 
         public virtual DbSet<Profile> Profiles { get; set; }
+
+        public virtual DbSet<Reservation> Reservations { get; set; }
     }
 }
