@@ -5,8 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Polly;
+using PrimeHotel.Web.Clients;
 using PrimeHotel.Web.Data;
 using PrimeHotel.Web.Models;
+using System;
 
 namespace PrimeHotel.Web
 {
@@ -23,6 +26,15 @@ namespace PrimeHotel.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddHttpClient<IWeatherStackClient, WeatherStackClient>()
+                .AddTransientHttpErrorPolicy(
+                    p => p.WaitAndRetryAsync(new[]
+                    {
+                        TimeSpan.FromSeconds(1),
+                        TimeSpan.FromSeconds(5),
+                        TimeSpan.FromSeconds(10)
+                    }));
 
             // Entity Framework
             services.AddDbContext<PrimeDbContext>(options =>
