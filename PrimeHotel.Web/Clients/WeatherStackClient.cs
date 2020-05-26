@@ -24,14 +24,19 @@ namespace PrimeHotel.Web.Clients
         {
             _client = client;
             _logger = logger;
+
+            // authorization is not needed to call WeatherStack.com - this is only to show how to add basic authorization
+            var authToken = Encoding.ASCII.GetBytes($"{Username}:{Password}");
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Basic",
+                Convert.ToBase64String(authToken));
         }
 
         public async Task<WeatherStackResponse> GetCurrentWeather(string city)
         {
             try
             {
-                var response = await _client.GetAsync(GetWeatherStackUrl(city));
-                using var responseStream = await response.Content.ReadAsStreamAsync();
+                using var responseStream = await _client.GetStreamAsync(GetWeatherStackUrl(city));
                 var currentForecast = await JsonSerializer.DeserializeAsync<WeatherStackResponse>(responseStream);
 
                 return currentForecast;
@@ -43,19 +48,13 @@ namespace PrimeHotel.Web.Clients
             }
         }
 
-        public async Task<WeatherStackResponse> GetCurrentWeatherWithAuth(string city)
+        public async Task<WeatherStackResponse> GetCurrentWeatherWithCancellationToken(string city)
         {
             try
             {
                 using var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(3));
 
-                var authToken = Encoding.ASCII.GetBytes($"{Username}:{Password}");
-                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                    "Basic",
-                    Convert.ToBase64String(authToken));
-
-                var response = await _client.GetAsync(GetWeatherStackUrl(city), cancellationTokenSource.Token);
-                using var responseStream = await response.Content.ReadAsStreamAsync();
+                using var responseStream = await _client.GetStreamAsync(GetWeatherStackUrl(city), cancellationTokenSource.Token);
                 var currentForecast = await JsonSerializer.DeserializeAsync<WeatherStackResponse>(responseStream);
 
                 return currentForecast;
