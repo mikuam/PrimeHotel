@@ -144,6 +144,16 @@ namespace PrimeHotel.Web.Controllers
             });
         }
 
+        [HttpPost("UpdateProfiles")]
+        public async Task<IActionResult> UpdateProfiles([FromBody] int minimalProfileId = 0)
+        {
+            await primeDbContext.Database.ExecuteSqlRawAsync(
+                "UpdateProfilesCountry @p0",
+                parameters: new[] { minimalProfileId.ToString() });
+
+            return Ok();
+        }
+
         private IEnumerable<Profile> GenerateProfiles(int count)
         {
             var profileGenerator = new Faker<Profile>()
