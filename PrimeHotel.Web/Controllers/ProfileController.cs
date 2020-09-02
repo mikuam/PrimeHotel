@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
 using Microsoft.AspNetCore.Mvc;
@@ -152,6 +153,14 @@ namespace PrimeHotel.Web.Controllers
                 parameters: new[] { minimalProfileId.ToString() });
 
             return Ok();
+        }
+
+        [HttpGet("GetGuestsForData")]
+        public IActionResult GetGuestsForData([FromQuery] string date)
+        {
+            var guests = primeDbContext.GuestArrivals.FromSqlRaw($"GetGuestsForDate '{date}'").ToList();
+
+            return Ok(guests);
         }
 
         private IEnumerable<Profile> GenerateProfiles(int count)
