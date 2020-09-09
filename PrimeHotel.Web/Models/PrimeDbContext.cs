@@ -17,5 +17,18 @@ namespace PrimeHotel.Web.Models
 
         // from stored procedures
         public virtual DbSet<GuestArrival> GuestArrivals { get; set; }
+
+        // from views
+        public virtual DbSet<RoomOccupied> RoomsOccupied { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<RoomOccupied>(eb =>
+                {
+                    eb.HasNoKey();
+                    eb.ToView("vwRoomsOccupied");
+                });
+        }
     }
 }

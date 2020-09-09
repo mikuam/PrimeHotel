@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
@@ -161,6 +162,15 @@ namespace PrimeHotel.Web.Controllers
             var guests = primeDbContext.GuestArrivals.FromSqlRaw($"GetGuestsForDate '{date}'").ToList();
 
             return Ok(guests);
+        }
+
+        [HttpGet("GetRoomsOccupied")]
+        public IActionResult GetGuestArrivalsFromView([FromQuery] string date)
+        {
+            var parsedDate = DateTime.ParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            var rooms = primeDbContext.RoomsOccupied.Where(r => r.From <= parsedDate && r.To >= parsedDate);
+
+            return Ok(rooms);
         }
 
         private IEnumerable<Profile> GenerateProfiles(int count)
