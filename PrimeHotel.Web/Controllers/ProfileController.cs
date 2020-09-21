@@ -149,17 +149,16 @@ namespace PrimeHotel.Web.Controllers
         [HttpPost("UpdateProfiles")]
         public async Task<IActionResult> UpdateProfiles([FromBody] int minimalProfileId = 0)
         {
-            await primeDbContext.Database.ExecuteSqlRawAsync(
-                "UpdateProfilesCountry @p0",
-                parameters: new[] { minimalProfileId.ToString() });
+            await primeDbContext.Database.ExecuteSqlInterpolatedAsync(
+                $"UPDATE Profiles SET Country = 'Poland' WHERE LEFT(TelNo, 2) = '48' AND Id > {minimalProfileId}");
 
             return Ok();
         }
 
-        [HttpGet("GetGuestsForData")]
+        [HttpGet("GetGuestsForDate")]
         public IActionResult GetGuestsForData([FromQuery] string date)
         {
-            var guests = primeDbContext.GuestArrivals.FromSqlRaw($"GetGuestsForDate '{date}'").ToList();
+            var guests = primeDbContext.GuestArrivals.FromSqlInterpolated($"GetGuestsForDate '{date}'").ToList();
 
             return Ok(guests);
         }
