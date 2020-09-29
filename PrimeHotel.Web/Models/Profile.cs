@@ -21,5 +21,7 @@ namespace PrimeHotel.Web.Models
         public string Country { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
+
+        public Address Address { get; set; }
     }
 }

@@ -15,6 +15,8 @@ namespace PrimeHotel.Web.Models
 
         public virtual DbSet<Reservation> Reservations { get; set; }
 
+        public virtual DbSet<Address> Address { get; set; }
+
         // from stored procedures
         public virtual DbSet<GuestArrival> GuestArrivals { get; set; }
 
