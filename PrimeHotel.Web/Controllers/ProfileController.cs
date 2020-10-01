@@ -42,6 +42,8 @@ namespace PrimeHotel.Web.Controllers
                 return NotFound();
             }
 
+            primeDbContext.Entry(profile).Reference(p => p.Address).Load();
+
             return Ok(profile);
         }
 

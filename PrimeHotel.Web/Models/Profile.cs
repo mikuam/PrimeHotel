@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PrimeHotel.Web.Models
 {
@@ -23,5 +24,7 @@ namespace PrimeHotel.Web.Models
         public DateTime? DateOfBirth { get; set; }
 
         public Address Address { get; set; }
+
+        public List<ReservationProfile> ReservationProfiles { get; set; }
     }
 }

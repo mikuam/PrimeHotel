@@ -7,7 +7,7 @@ namespace PrimeHotel.Web.Controllers
     public class NewReservation
     {
         [Required]
-        public int? RoomId { get; set; }
+        public int RoomId { get; set; }
 
         [Required]
         public List<int> GuestIds { get; set; }

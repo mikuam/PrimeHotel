@@ -26,6 +26,22 @@ namespace PrimeHotel.Web.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
+                .Entity<ReservationProfile>()
+                .HasKey(t => new {t.ReservationId, t.ProfileId});
+
+            modelBuilder
+                .Entity<ReservationProfile>()
+                .HasOne(r => r.Reservation)
+                .WithMany(p => p.ReservationProfiles)
+                .HasForeignKey(rp => rp.ReservationId);
+
+            modelBuilder
+                .Entity<ReservationProfile>()
+                .HasOne(r => r.Profile)
+                .WithMany(p => p.ReservationProfiles)
+                .HasForeignKey(rp => rp.ProfileId);
+
+            modelBuilder
                 .Entity<RoomOccupied>(eb =>
                 {
                     eb.HasNoKey();
