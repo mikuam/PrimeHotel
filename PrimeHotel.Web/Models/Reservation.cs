@@ -11,7 +11,7 @@ namespace PrimeHotel.Web.Models
 
         public Room Room { get; set; }
 
-        public List<ReservationProfile> ReservationProfiles { get; set; }
+        public List<Profile> Profiles { get; set; }
 
         public DateTime Created { get; set; }
 

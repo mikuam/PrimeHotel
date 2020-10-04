@@ -34,7 +34,7 @@ namespace PrimeHotel.Web.Controllers
                 return NotFound();
             }
 
-            await primeDbContext.Entry(reservation).Collection(r => r.ReservationProfiles).LoadAsync();
+            await primeDbContext.Entry(reservation).Collection(r => r.Profiles).LoadAsync();
             await primeDbContext.Entry(reservation).Reference(r => r.Room).LoadAsync();
 
             return Ok(reservation);
@@ -56,14 +56,11 @@ namespace PrimeHotel.Web.Controllers
                 Created = DateTime.UtcNow,
                 From = newReservation.From.Value,
                 To = newReservation.To.Value,
-                Room = room
+                Room = room,
+                Profiles = guests
             };
 
             var createdReservation = await primeDbContext.Reservations.AddAsync(reservation);
-            await primeDbContext.SaveChangesAsync();
-
-            createdReservation.Entity.ReservationProfiles = new List<ReservationProfile>(
-                guests.Select(g => new ReservationProfile { ReservationId = createdReservation.Entity.Id, ProfileId = g.Id }));
             await primeDbContext.SaveChangesAsync();
 
             return Ok(createdReservation.Entity.Id);

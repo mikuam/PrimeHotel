@@ -25,6 +25,6 @@ namespace PrimeHotel.Web.Models
 
         public Address Address { get; set; }
 
-        public List<ReservationProfile> ReservationProfiles { get; set; }
+        public List<Reservation> Reservations { get; set; }
     }
 }
