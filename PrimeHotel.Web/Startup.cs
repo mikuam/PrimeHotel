@@ -10,6 +10,7 @@ using PrimeHotel.Web.Clients;
 using PrimeHotel.Web.Data;
 using PrimeHotel.Web.Models;
 using System;
+using System.Text.Json.Serialization;
 
 namespace PrimeHotel.Web
 {
@@ -25,7 +26,12 @@ namespace PrimeHotel.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                    options.JsonSerializerOptions.MaxDepth = 0;
+                });
 
             services.AddHttpClient<IWeatherStackClient, WeatherStackClient>()
                 .AddTransientHttpErrorPolicy(
