@@ -38,7 +38,7 @@ namespace PrimeHotel.Web.Tests
         }
 
         [Test]
-        public async Task Get_WhenIdIsProvided_FetchesReservationWithRoomsAndGuests()
+        public async Task GetById_WhenIdIsProvided_FetchesReservationWithRoomsAndGuests()
         {
             using var context = new PrimeDbContext(dbContextOptions);
             var result = await controller.GetById(2);
@@ -58,7 +58,7 @@ namespace PrimeHotel.Web.Tests
                 From = DateTime.Today.AddDays(3),
                 To = DateTime.Today.AddDays(7),
                 RoomId = 3,
-                GuestIds = new List<int>{ 2 }
+                GuestIds = new List<int> { 2 }
             };
 
             using var context = new PrimeDbContext(dbContextOptions);
@@ -84,55 +84,16 @@ namespace PrimeHotel.Web.Tests
             using var context = new PrimeDbContext(dbContextOptions);
             var rooms = new List<Room>
             {
-                new Room
-                {
-                    Id = 1,
-                    Description = "Room nr 1",
-                    Number = 1,
-                    Level = 1,
-                    RoomType = RoomType.Standard
-                },
-                new Room
-                {
-                    Id = 2,
-                    Description = "Room nr 2",
-                    Number = 2,
-                    Level = 1,
-                    RoomType = RoomType.Standard
-                },
-                new Room
-                {
-                    Id = 3,
-                    Description = "Room nr 3",
-                    Number = 3,
-                    Level = 2,
-                    RoomType = RoomType.Suite
-                }
+                new Room { Id = 1, Description = "Room nr 1", Number = 1, Level = 1, RoomType = RoomType.Standard },
+                new Room { Id = 2, Description = "Room nr 2", Number = 2, Level = 1, RoomType = RoomType.Standard },
+                new Room { Id = 3, Description = "Room nr 3", Number = 3, Level = 2, RoomType = RoomType.Suite }
             };
 
             var profiles = new List<Profile>
             {
-                new Profile
-                {
-                    Id = 1,
-                    Ref = "Profile 1",
-                    Forename = "Michał",
-                    Surname = "Białecki"
-                },
-                new Profile
-                {
-                    Id = 2,
-                    Ref = "Profile 2",
-                    Forename = "John",
-                    Surname = "Show"
-                },
-                new Profile
-                {
-                    Id = 3,
-                    Ref = "Profile 3",
-                    Forename = "Daenerys",
-                    Surname = "Targaryen"
-                },
+                new Profile { Id = 1, Ref = "Profile 1", Forename = "Michał", Surname = "Białecki" },
+                new Profile { Id = 2, Ref = "Profile 2", Forename = "John", Surname = "Show" },
+                new Profile { Id = 3, Ref = "Profile 3", Forename = "Daenerys", Surname = "Targaryen" }
             };
 
             context.AddRange(rooms);
@@ -141,7 +102,7 @@ namespace PrimeHotel.Web.Tests
             context.AddRange(new List<Reservation>
             {
                 new Reservation
-                {
+                { 
                     Id = 1,
                     Room = rooms[0],
                     Profiles = new List<Profile>{ profiles[0] },
