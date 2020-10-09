@@ -26,7 +26,7 @@ namespace PrimeHotel.Web.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             var reservation = await primeDbContext.Reservations.FindAsync(id);
             if (reservation == null)
