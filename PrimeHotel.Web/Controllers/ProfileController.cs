@@ -160,7 +160,7 @@ namespace PrimeHotel.Web.Controllers
         [HttpGet("GetGuestsForDate")]
         public IActionResult GetGuestsForData([FromQuery] string date)
         {
-            var guests = primeDbContext.GuestArrivals.FromSqlInterpolated($"GetGuestsForDate '{date}'").ToList();
+            var guests = primeDbContext.GuestArrivals.FromSqlInterpolated($"GetGuestsForDate {date}").ToList();
 
             return Ok(guests);
         }
