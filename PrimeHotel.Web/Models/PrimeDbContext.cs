@@ -17,10 +17,10 @@ namespace PrimeHotel.Web.Models
 
         public virtual DbSet<Address> Address { get; set; }
 
-        // from stored procedures
+        // from stored procedure
         public virtual DbSet<GuestArrival> GuestArrivals { get; set; }
 
-        // from views
+        // from view
         public virtual DbSet<RoomOccupied> RoomsOccupied { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

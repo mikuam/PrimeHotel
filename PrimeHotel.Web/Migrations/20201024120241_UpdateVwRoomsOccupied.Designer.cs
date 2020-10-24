@@ -10,8 +10,8 @@ using PrimeHotel.Web.Models;
 namespace PrimeHotel.Web.Migrations
 {
     [DbContext(typeof(PrimeDbContext))]
-    [Migration("20200903152708_vwRoomsOccupied")]
-    partial class vwRoomsOccupied
+    [Migration("20201024120241_UpdateVwRoomsOccupied")]
+    partial class UpdateVwRoomsOccupied
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,7 +19,37 @@ namespace PrimeHotel.Web.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0-preview.8.20407.4");
+                .HasAnnotation("ProductVersion", "5.0.0-rc.1.20451.13");
+
+            modelBuilder.Entity("PrimeHotel.Web.Models.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HouseNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfileId")
+                        .IsUnique();
+
+                    b.ToTable("Address");
+                });
 
             modelBuilder.Entity("PrimeHotel.Web.Models.GuestArrival", b =>
                 {
@@ -66,9 +96,6 @@ namespace PrimeHotel.Web.Migrations
                     b.Property<string>("Ref")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ReservationId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Salutation")
                         .HasColumnType("nvarchar(max)");
 
@@ -79,8 +106,6 @@ namespace PrimeHotel.Web.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReservationId");
 
                     b.ToTable("Profiles");
                 });
@@ -98,7 +123,7 @@ namespace PrimeHotel.Web.Migrations
                     b.Property<DateTime>("From")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("To")
@@ -144,18 +169,81 @@ namespace PrimeHotel.Web.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("PrimeHotel.Web.Models.Profile", b =>
+            modelBuilder.Entity("PrimeHotel.Web.Models.RoomOccupied", b =>
                 {
-                    b.HasOne("PrimeHotel.Web.Models.Reservation", null)
-                        .WithMany("Guests")
-                        .HasForeignKey("ReservationId");
+                    b.Property<DateTime>("From")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoomNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("To")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("WithBathroom")
+                        .HasColumnType("bit");
+
+                    b.ToView("vwRoomsOccupied");
+                });
+
+            modelBuilder.Entity("ProfileReservation", b =>
+                {
+                    b.Property<int>("ProfilesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReservationsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProfilesId", "ReservationsId");
+
+                    b.HasIndex("ReservationsId");
+
+                    b.ToTable("ProfileReservation");
+                });
+
+            modelBuilder.Entity("PrimeHotel.Web.Models.Address", b =>
+                {
+                    b.HasOne("PrimeHotel.Web.Models.Profile", "Profile")
+                        .WithOne("Address")
+                        .HasForeignKey("PrimeHotel.Web.Models.Address", "ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
                 });
 
             modelBuilder.Entity("PrimeHotel.Web.Models.Reservation", b =>
                 {
                     b.HasOne("PrimeHotel.Web.Models.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("ProfileReservation", b =>
+                {
+                    b.HasOne("PrimeHotel.Web.Models.Profile", null)
+                        .WithMany()
+                        .HasForeignKey("ProfilesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PrimeHotel.Web.Models.Reservation", null)
+                        .WithMany()
+                        .HasForeignKey("ReservationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PrimeHotel.Web.Models.Profile", b =>
+                {
+                    b.Navigation("Address");
                 });
 #pragma warning restore 612, 618
         }
