@@ -22,7 +22,7 @@ namespace PrimeHotel.Web.Controllers
         [HttpGet]
         public async Task<IEnumerable<Reservation>> Get()
         {
-            return await primeDbContext.Reservations.ToListAsync();
+            return await primeDbContext.Reservations.Include(r => r.Room).AsNoTracking().ToListAsync();
         }
 
         [HttpGet("{id}")]
