@@ -26,7 +26,7 @@ namespace PrimeHotel.Web.Data
 
         public async Task<Profile> GetAsync(int profileId)
         {
-            return await GetOpenedConnection().QueryFirstAsync<Profile>(SQL.GetAll, new { id = profileId });
+            return await GetOpenedConnection().QueryFirstAsync<Profile>(SQL.Get, new { id = profileId });
         }
 
         public async Task AddAsync(Profile newProfile)
@@ -61,13 +61,13 @@ namespace PrimeHotel.Web.Data
                 FROM Profiles";
 
             internal const string Get = @"
-                SELECT *
+                SELECT TOP 1 *
                 FROM Profiles
 	            WHERE Id = @id";
 
             internal const string Add = @"
-                INSERT INTO Profiles (Ref, Forename, Surname, TelNo, Email, DateOfBirth)
-                VALUES(@Ref, @Forename, @Surname, @TelNo, @Email, @DateOfBirth)";
+                INSERT INTO Profiles (Ref, Forename, Surname, TelNo, Email, DateOfBirth, Salutation, Country)
+                VALUES(@Ref, @Forename, @Surname, @TelNo, @Email, @DateOfBirth, @Salutation, @Country)";
 
             internal const string Update = @"
                 UPDATE Profiles
@@ -77,7 +77,10 @@ namespace PrimeHotel.Web.Data
                     Surname = @Surname,
                     TelNo = @TelNo,
                     Email = @Email,
-                    DateOfBirth = @DateOfBirth
+                    DateOfBirth = @DateOfBirth,
+                    Salutation = @Salutation,
+                    Country = @Country,
+                    AddressId = @AddressId
                 WHERE Id = @id";
 
             internal const string Remove = @"

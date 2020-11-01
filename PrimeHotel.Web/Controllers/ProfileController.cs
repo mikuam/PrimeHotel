@@ -176,13 +176,17 @@ namespace PrimeHotel.Web.Controllers
 
         private IEnumerable<Profile> GenerateProfiles(int count)
         {
+            var salutations = new string[] {"Mr", "Mrs"};
+
             var profileGenerator = new Faker<Profile>()
                 .RuleFor(p => p.Ref, v => v.Person.UserName)
                 .RuleFor(p => p.Forename, v => v.Person.FirstName)
                 .RuleFor(p => p.Surname, v => v.Person.LastName)
                 .RuleFor(p => p.Email, v => v.Person.Email)
                 .RuleFor(p => p.TelNo, v => v.Person.Phone)
-                .RuleFor(p => p.DateOfBirth, v => v.Person.DateOfBirth);
+                .RuleFor(p => p.DateOfBirth, v => v.Person.DateOfBirth)
+                .RuleFor(p => p.Salutation, v => v.PickRandom(salutations))
+                .RuleFor(p => p.Country, v => v.Address.Country());
 
             return profileGenerator.Generate(count);
         }
