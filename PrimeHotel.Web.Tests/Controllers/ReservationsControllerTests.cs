@@ -33,7 +33,7 @@ namespace PrimeHotel.Web.Tests
             var reservations = (await controller.Get()).ToList();
 
             reservations.Count.Should().Be(2);
-            reservations.All(r => r.Room == null).Should().BeTrue();
+            reservations.All(r => r.Room == null).Should().BeFalse();
             reservations.All(r => r.Profiles == null).Should().BeTrue();
         }
 
