@@ -8,7 +8,6 @@ Check-out my posts about ASP.NET Core in .NET 5, using code from this project:
 - .NET 5 - how to start: https://www.michalbialecki.com/2020/06/08/net-5-how-to-start/
 - passing parameters to actions: https://www.michalbialecki.com/2020/05/07/asp-net-5-pass-parameters-to-actions/
 - sending a request: https://www.michalbialecki.com/2020/05/28/asp-net-core-in-net-5-sending-a-request/
-- 
 
 Also, check-out many articles about EF Core 5, using code from this project:
 - adding EF Core 5: http://www.michalbialecki.com/2020/07/10/primehotel-adding-entity-framework-core-5/
