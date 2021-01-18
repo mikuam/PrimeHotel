@@ -6,6 +6,8 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
+using LinqToDB.Data;
+using LinqToDB.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -143,6 +145,29 @@ namespace PrimeHotel.Web.Controllers
             return Ok(new
             {
                 inserted = dt.Rows.Count,
+                generationTime = gererationTime,
+                insertTime = s.Elapsed.ToString()
+            });
+        }
+
+        [HttpPost("GenerateAndInsertWithLinq2db")]
+        public async Task<IActionResult> GenerateAndInsertWithLinq2db([FromBody] int count = 1000)
+        {
+            Stopwatch s = new Stopwatch();
+            s.Start();
+
+            var profiles = GenerateProfiles(count);
+            var gererationTime = s.Elapsed.ToString();
+            s.Restart();
+
+            using (var db = primeDbContext.CreateLinqToDbConnection())
+            {
+                await db.BulkCopyAsync(new BulkCopyOptions { TableName = "Profiles" }, profiles);
+            }
+
+            return Ok(new
+            {
+                inserted = profiles.Count(),
                 generationTime = gererationTime,
                 insertTime = s.Elapsed.ToString()
             });
